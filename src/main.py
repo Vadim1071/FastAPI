@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse
 
 from users.router import router as users_router
 from books.router import router as books_router
@@ -14,15 +15,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/", response_class=HTMLResponse)
+async def read_index():
+    with open("index.html", encoding="utf-8") as f:
+        return f.read()
+
 app.include_router(users_router) #подключает все эндпоинты из router к app
 app.include_router(books_router)
 
 
 
-@app.get("/", response_class=HTMLResponse)
-async def read_index():
-    with open("index.html", encoding="utf-8") as f:
-        return f.read()
+
 
 
 # @app.get("/")
