@@ -15,9 +15,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 @app.get("/", response_class=HTMLResponse)
 async def read_index():
-    with open("index.html", encoding="utf-8") as f:
+    # Теперь путь будет /app/src/index.html — это точно сработает
+    index_path = os.path.join(BASE_DIR, "index.html")
+    with open(index_path, encoding="utf-8") as f:
         return f.read()
 
 app.include_router(users_router) #подключает все эндпоинты из router к app
