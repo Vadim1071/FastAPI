@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+import os
 from fastapi.responses import HTMLResponse
 
 from users.router import router as users_router
