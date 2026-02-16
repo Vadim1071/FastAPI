@@ -19,12 +19,15 @@ app.include_router(books_router)
 
 
 
+@app.get("/", response_class=HTMLResponse)
+async def read_index():
+    with open("index.html", encoding="utf-8") as f:
+        return f.read()
 
 
-
-@app.get("/")
-async def root():
-    return {"message": "Сервер работает. Используй /docs или /setup_database"}
+# @app.get("/")
+# async def root():
+#     return {"message": "Сервер работает. Используй /docs или /setup_database"}
 
 
 
