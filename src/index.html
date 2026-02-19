@@ -104,7 +104,12 @@
 </div>
 
 <script>
-const API = "";
+// Проверяем, есть ли в адресе сайта слово "onrender"
+const API = window.location.href.includes("onrender.com") 
+    ? window.location.origin // На сервере берем текущий адрес (https://...)
+    : "http://127.0.0.1:8001"; // Локально всегда стучимся на твой порт 8001
+
+console.log("Текущий API адрес:", API); // Чтобы ты сам видел в консоли, что подставилось
 
 // Вспомогательная функция для уведомлений
 function notify(msg, type = "success") {
