@@ -4,7 +4,7 @@ import os
 from fastapi.responses import HTMLResponse
 from database import engine
 from users.models import Base
-from books.models import Base 
+
 # И обязательно импортируй модели, чтобы Base их увидел!
 from users.models import UserModel
 from books.models import BookModel
@@ -45,13 +45,26 @@ app.include_router(books_router)
 
 
 
+# @app.post('/setup_database')
+# async def setup_database():
+#     async with engine.begin() as conn:
+#         await conn.run_sync(Base.metadata.drop_all)
+#         await conn.run_sync(Base.metadata.create_all)
+#     return {'msg':'ok'}
+
+
+
+
 @app.post('/setup_database')
 async def setup_database():
+    # Импортируем твои Base из каждого файла
+    from users.models import Base as UserBase
+    from books.models import Base as BookBase
+    
     async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.drop_all)
-        await conn.run_sync(Base.metadata.create_all)
-    return {'msg':'ok'}
-
-
-
-
+        # Чистим и создаем таблицы для каждого Base по отдельности
+        for b in [UserBase, BookBase]:
+            await conn.run_sync(b.metadata.drop_all)
+            await conn.run_sync(b.metadata.create_all)
+            
+    return {'msg': 'ok, база создана для всех моделей'}
