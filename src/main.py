@@ -2,6 +2,12 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import os
 from fastapi.responses import HTMLResponse
+from database import engine
+from users.models import Base
+from books.models import Base 
+# И обязательно импортируй модели, чтобы Base их увидел!
+from users.models import UserModel
+from books.models import BookModel
 
 from users.router import router as users_router
 from books.router import router as books_router
